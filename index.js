@@ -1,24 +1,15 @@
 const SmeeClient = require('smee-client')
 
-const SMEESOURCE1=process.env.SMEESOURCE1
-const HTTPTARGET1=process.env.HTTPTARGET1
-const SMEESOURCE2=process.env.SMEESOURCE2
-const HTTPTARGET2=process.env.HTTPTARGET2
+const SMEESOURCE=process.env.SMEESOURCE
+const HTTPTARGET=process.env.HTTPTARGET
 
-const smee1 = new SmeeClient({
-  source: SMEESOURCE1,
-  target: HTTPTARGET1,
+const smee = new SmeeClient({
+  source: SMEESOURCE,
+  target: HTTPTARGET,
   logger: console
 })
 
-const smee2 = new SmeeClient({
-  source: SMEESOURCE2,
-  target: HTTPTARGET2,
-  logger: console
-})
-
-const events1 = smee1.start()
-const events2 = smee2.start()
+const events = smee.start()
 
 // Stop forwarding events
 //events.close()
