@@ -13,13 +13,13 @@ function getValue(data) {
       source: smeeSource,
       target: httpTraget,
       logger: console
-    })
+    });
 
     smee.start();
   }
 }
 
-myHeaders = new Headers({
+const myHeaders = new Headers({
   'Authorization': 'token ' + process.env.GITHUBTOKEN,
 });
 
