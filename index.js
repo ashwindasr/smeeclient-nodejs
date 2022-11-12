@@ -1,15 +1,31 @@
 const SmeeClient = require('smee-client')
 
-const SMEESOURCE=process.env.SMEESOURCE
-const HTTPTARGET=process.env.HTTPTARGET
+function getValue(data) {
+  const routes = data.routes;
 
-const smee = new SmeeClient({
-  source: SMEESOURCE,
-  target: HTTPTARGET,
-  logger: console
-})
+  for(const key in routes) {
+    const value = routes[key];
+    const smeeSource = value["SMEESOURCE"];
+    const httpTraget = value["HTTPTARGET"];
 
-const events = smee.start()
 
-// Stop forwarding events
-//events.close()
+    const smee = new SmeeClient({
+      source: smeeSource,
+      target: httpTraget,
+      logger: console
+    })
+
+    smee.start();
+  }
+}
+
+myHeaders = new Headers({
+  'Authorization': 'token ' + process.env.GITHUBTOKEN,
+});
+
+fetch(process.env.JSONPATH, {
+  headers: myHeaders,
+  method: 'GET'
+}).then(response => response.json())
+    .then(data => getValue(data));
+
