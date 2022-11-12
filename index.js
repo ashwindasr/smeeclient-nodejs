@@ -1,4 +1,5 @@
 const SmeeClient = require('smee-client')
+import fetch from "node-fetch";
 
 fetch(process.env.JSONPATH, {
     headers: {
