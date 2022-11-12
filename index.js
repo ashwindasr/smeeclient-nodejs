@@ -1,29 +1,46 @@
 import fetch from "node-fetch";
 import SmeeClient from "smee-client";
 
-fetch(process.env.JSONPATH, {
-    headers: {
-        'Authorization': 'token ' + process.env.GITHUBTOKEN,
-    },
-    method: 'GET'
-}).then(response => response.json())
-    .then(data => getValue(data));
 
-function getValue(data) {
-    const routes = data.routes;
+const getConfigFile = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let response = await fetch(process.env.JSONPATH, {
+                headers: {
+                    'Authorization': 'token ' + process.env.GITHUBTOKEN,
+                },
+                method: 'GET'
+            })
+            let data = await response.json();
+            resolve(data);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
 
-    for (const key in routes) {
-        const value = routes[key];
-        const smeeSource = value["SMEESOURCE"];
-        const httpTraget = value["HTTPTARGET"];
+async function startSmeeClients() {
+    try {
+        let configFile = await getConfigFile();
 
+        const routes = configFile['routes'];
 
-        const smee = new SmeeClient({
-            source: smeeSource,
-            target: httpTraget,
-            logger: console
-        });
+        for (const key in routes) {
+            const route = routes[key];
 
-        smee.start();
+            const smee = new SmeeClient({
+                source: route["SMEESOURCE"],
+                target: route["HTTPTARGET"],
+                logger: console
+            });
+
+            smee.start();
+        }
+
+    } catch (error) {
+        console.log("Error occurred here: ", error);
     }
 }
+
+
+await startSmeeClients();
