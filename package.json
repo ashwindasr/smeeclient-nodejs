@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "smeeclient-nodejs",
   "version": "1.0.0",
   "description": "Smeeclient nodejs app",
